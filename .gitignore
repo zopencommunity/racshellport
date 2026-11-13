@@ -1,0 +1,11 @@
+log/
+log.DEV/
+log.STABLE/
+build/
+install/
+.pip-cache/
+.zoslib_hooks/
+
+# Ignore source directories created by zopen-build
+racshell-*/
+racshell/

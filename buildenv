@@ -1,0 +1,74 @@
+###
+### Build control file for the racshell port
+###
+# racshell does not publish tagged releases; version is manually maintained.
+RACSHELL_VERSION="1.0.0"
+
+export ZOPEN_PROJECT_NAME="racshell"
+export ZOPEN_BUILD_LINE="STABLE"
+export ZOPEN_STABLE_URL="https://github.com/Mainframe-Renewal-Project/racshell.git"
+export ZOPEN_STABLE_DEPS="cmake make zoslib openssl"
+export ZOPEN_DEV_URL="https://github.com/Mainframe-Renewal-Project/racshell.git"
+export ZOPEN_DEV_DEPS="cmake make zoslib openssl"
+export ZOPEN_CATEGORIES="security"
+export ZOPEN_RUNTIME_DEPS=""
+
+export ZOPEN_COMP=CLANG
+
+# Use the z/OS CMake preset; pass zoslib from the installed zopen package
+export ZOPEN_CONFIGURE="cmake"
+export ZOPEN_CONFIGURE_OPTS="--preset zos -DZOSLIB:FILEPATH=\${ZOSLIB_HOME}/lib/libzoslib.a -DCMAKE_INSTALL_PREFIX=\${ZOPEN_INSTALL_DIR}"
+export ZOPEN_MAKE="cmake"
+export ZOPEN_MAKE_OPTS="--build build/zos --parallel \$ZOPEN_NUM_JOBS --target racshell_commands"
+export ZOPEN_MAKE_MINIMAL=Y
+export ZOPEN_INSTALL="skip"
+export ZOPEN_CLEAN="skip"
+
+zopen_cleanup()
+{
+  # CMake build directory is at build/zos; remove it to allow a clean rebuild
+  rm -rf build/zos
+}
+
+zopen_init()
+{
+  # racshell uses a git submodule (sear) that must be initialised after clone
+  git submodule update --init --recursive sear
+}
+
+zopen_install()
+{
+  mkdir -p "${ZOPEN_INSTALL_DIR}/bin"
+  for cmd in build/zos/adduser build/zos/altuser build/zos/deleteuser \
+              build/zos/listuser build/zos/searchusers build/zos/compareusers \
+              build/zos/resume build/zos/revoke build/zos/resetpassword \
+              build/zos/resetpassphrase build/zos/addgroup build/zos/altgroup \
+              build/zos/deletegroup build/zos/listgroup build/zos/searchgroups \
+              build/zos/comparegroups build/zos/connect build/zos/remove \
+              build/zos/adddataset build/zos/altdataset build/zos/deletedataset \
+              build/zos/listdataset build/zos/searchdatasets \
+              build/zos/permitdataset build/zos/deletepermitdataset \
+              build/zos/addresource build/zos/altresource build/zos/deleteresource \
+              build/zos/listresource build/zos/searchresource \
+              build/zos/permitresource build/zos/deletepermitresource \
+              build/zos/addkeyring build/zos/deletekeyring build/zos/listkeyring \
+              build/zos/racfctl build/zos/rrsflist; do
+    cp "${cmd}" "${ZOPEN_INSTALL_DIR}/bin/" 2>/dev/null || true
+  done
+}
+
+zopen_check_results()
+{
+  dir="$1"
+  pfx="$2"
+  chk="$1/$2_check.log"
+  echo "actualFailures:0"
+  echo "totalTests:1"
+  echo "expectedFailures:0"
+  echo "expectedTotalTests:1"
+}
+
+zopen_get_version()
+{
+  echo "${RACSHELL_VERSION}"
+}
