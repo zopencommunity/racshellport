@@ -2,7 +2,7 @@
 ### Build control file for the racshell port
 ###
 # racshell does not publish tagged releases; version is manually maintained.
-RACSHELL_VERSION="1.0.0"
+RACSHELL_VERSION="0.1.0"
 
 export ZOPEN_PROJECT_NAME="racshell"
 export ZOPEN_BUILD_LINE="STABLE"
