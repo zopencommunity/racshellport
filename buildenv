@@ -2,7 +2,7 @@
 ### Build control file for the racshell port
 ###
 # bump: racshell-version /RACSHELL_VERSION="(.*)"/ https://github.com/Mainframe-Renewal-Project/racshell.git|semver:*
-RACSHELL_VERSION="0.1.0"
+RACSHELL_VERSION="0.2.0"
 
 export ZOPEN_PROJECT_NAME="racshell"
 export ZOPEN_BUILD_LINE="STABLE"
