@@ -22,7 +22,7 @@ export ZOPEN_CONFIGURE_OPTS="--preset zos -DZOSLIB:FILEPATH=\${ZOSLIB_HOME}/lib/
 export ZOPEN_MAKE="cmake"
 export ZOPEN_MAKE_OPTS="--build build/zos --parallel \$ZOPEN_NUM_JOBS --target racshell_commands"
 export ZOPEN_MAKE_MINIMAL=Y
-export ZOPEN_INSTALL="skip"
+export ZOPEN_INSTALL="zopen_install"
 export ZOPEN_CLEAN="skip"
 
 zopen_cleanup()
